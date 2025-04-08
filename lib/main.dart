@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medi_1/current_address/search_location_screen.dart';
+import 'package:medi_1/screens/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: SearchLocationScreen(),
+      title: 'Medi App',
+      theme: ThemeData(primarySwatch: Colors.teal),
+      home: const MainScreen(),
     );
   }
 }

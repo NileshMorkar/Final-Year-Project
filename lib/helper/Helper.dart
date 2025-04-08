@@ -1,5 +1,5 @@
 class Helper {
-  String formatDuration(String seconds) {
+  static String formatDuration(String seconds) {
     int secondsInt = int.parse(seconds.substring(0, seconds.length - 1));
     final int hours = secondsInt ~/ 3600;
     final int minutes = (secondsInt % 3600) ~/ 60;
