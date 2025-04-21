@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medi_1/screens/main_screen.dart';
+import 'package:medi_1/screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,9 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Medi App',
+      title: 'RapidAid',
+
       theme: ThemeData(primarySwatch: Colors.teal),
-      home: const MainScreen(),
+
+      home: const SplashScreen(),
     );
   }
 }

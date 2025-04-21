@@ -25,7 +25,8 @@ class _LocationScreenState extends State<SearchLocationScreen> {
   double startLat = 0, startLng = 0;
   double endLat = 0, endLng = 0;
 
-  bool isLoading = false;
+  bool isLoading1 = false;
+  bool isLoading2 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +195,7 @@ class _LocationScreenState extends State<SearchLocationScreen> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          isLoading = true;
+          isLoading1 = true;
         });
         determinePosition().then((value) {
           startLat = value.latitude;
@@ -207,7 +208,7 @@ class _LocationScreenState extends State<SearchLocationScreen> {
               setState(() {
                 searchPlaceController1.text =
                     value.results?[0].formattedAddress ?? "";
-                isLoading = false;
+                isLoading1 = false;
               }),
             },
           );
@@ -229,7 +230,7 @@ class _LocationScreenState extends State<SearchLocationScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children:
-              isLoading
+              isLoading1
                   ? [
                     CircularProgressIndicator(
                       color: Colors.white,
@@ -268,16 +269,16 @@ class _LocationScreenState extends State<SearchLocationScreen> {
           backgroundColor: Colors.transparent, // Needed for gradient effect
         ),
         onPressed:
-            isLoading
+            isLoading2
                 ? null
                 : () async {
                   if (_formKey1.currentState!.validate() &&
                       _formKey2.currentState!.validate()) {
-                    setState(() => isLoading = true);
+                    setState(() => isLoading2 = true);
 
                     await Future.delayed(const Duration(milliseconds: 500));
 
-                    setState(() => isLoading = false);
+                    setState(() => isLoading2 = false);
 
                     Navigator.push(
                       context,
@@ -307,7 +308,7 @@ class _LocationScreenState extends State<SearchLocationScreen> {
           ),
           child: Center(
             child:
-                isLoading
+                isLoading2
                     ? const SizedBox(
                       height: 26,
                       width: 26,
