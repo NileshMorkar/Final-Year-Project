@@ -3,8 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:medi_1/screens/route_map_screen.dart';
 
+import '../Constants/Constants.dart';
 import '../api_services/api_services.dart';
-import '../constants/constants.dart';
 import '../permissions/location_permission.dart';
 
 class SearchLocationScreen extends StatefulWidget {

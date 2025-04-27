@@ -37,20 +37,18 @@ class _AuthPageState extends State<AuthPage> {
     checkLoginStatus();
   }
 
-  // Check if the user is logged in based on SharedPreferences
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    // final token = prefs.getString('jwt_token');
-    // if (token != null) {
-    //   setState(() {
-    //     isLoggedIn = true;
-    //   });
-    //   // Navigate to MainScreen if the user is already logged in
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => const MainScreen()),
-    //   );
-    // }
+    final ambulanceId = prefs.getString('ambulanceId');
+    if (ambulanceId != null) {
+      setState(() {
+        isLoggedIn = true;
+      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
+    }
   }
 
   // Clear all input fields
@@ -69,7 +67,7 @@ class _AuthPageState extends State<AuthPage> {
       controller.clear();
     }
     setState(() {
-      selectedAmbulanceType = 'Normal'; // Reset to default ambulance type
+      selectedAmbulanceType = 'Normal';
     });
   }
 
@@ -123,9 +121,12 @@ class _AuthPageState extends State<AuthPage> {
 
       if (result['success']) {
         clearFields();
+        final prefs = await SharedPreferences.getInstance();
+        // String? ambulanceId = prefs.getString('ambulanceId') ?? '1';
+
         if (isLogin) {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('jwt_token', result['data']['token']);
+          // await prefs.setString('jwt_token', result['data']['token']);
+          await prefs.setString('ambulanceId', result['data']['ambulanceId']);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -137,8 +138,6 @@ class _AuthPageState extends State<AuthPage> {
             Colors.green,
           );
         }
-      } else {
-        showSnack(result['message']);
       }
     } catch (e) {
       showSnack("Error: ${e.toString()}");
@@ -193,6 +192,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal[50],
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:medi_1/constants/constants.dart';
 import 'package:medi_1/models/place_from_coordinates.dart';
 
+import '../Constants/Constants.dart';
 import '../models/hospital_places.dart';
 import '../models/route_response.dart';
 

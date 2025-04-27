@@ -81,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // Logout function with confirmation dialog
-  void _logout(BuildContext context) {
+  Future<void> _logout(BuildContext context) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -99,9 +99,9 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.clear();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AuthPage()),
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const AuthPage()),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text("Log Out"),
@@ -146,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: const Color(0xFFF4F7F9),
       appBar: AppBar(
         title: const Text(
-          "Driver Profile",
+          "My Profile",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: Colors.teal,
@@ -154,6 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
+            color: Colors.white,
             onPressed:
                 () => _logout(
                   context,
@@ -233,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      profileData!['name'] ?? 'N/A',
+                      profileData!['fullName'] ?? 'N/A',
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -343,7 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Expanded(
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
-                                value: selectedAmbulanceType,
+                                value: profileData!['ambulanceType'],
                                 // This will store the selected value
                                 isExpanded: true,
                                 items:
@@ -374,7 +375,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     // Profile Fields
                     buildProfileField(
                       "Phone",
-                      profileData!['phone'],
+                      profileData!['phoneNumber'],
                       Icons.phone,
                     ),
                     buildProfileField(
@@ -384,7 +385,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     buildProfileField(
                       "License Number",
-                      profileData!['licenseNumber'],
+                      profileData!['licenceNumber'],
                       Icons.badge,
                     ),
                     buildProfileField(

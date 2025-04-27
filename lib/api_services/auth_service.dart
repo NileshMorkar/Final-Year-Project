@@ -3,17 +3,39 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  final String baseUrl =
-      'https://final-year-project-c1mv.onrender.com/api/user/auth';
+  final String baseUrl = 'https://ambulance-management-backend.onrender.com';
 
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+    final url = Uri.parse('$baseUrl/ambulances/login');
 
-    return _handleResponse(response);
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+
+        if (body.containsKey('ambulanceId')) {
+          return {
+            'success': true,
+            'data': {'ambulanceId': body['ambulanceId'].toString()},
+          };
+        } else if (body['message'] == 'Email Not Present!') {
+          throw Exception('Email not found. Please check again.');
+        } else if (body['message'] == 'Password Is Wrong!') {
+          throw Exception('Wrong password. Please try again.');
+        } else {
+          throw Exception('Unknown response from server.');
+        }
+      } else {
+        throw Exception('Server Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Login failed: $e');
+    }
   }
 
   Future<Map<String, dynamic>> register({
@@ -29,15 +51,15 @@ class AuthService {
     required String ambulanceType,
   }) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/signup'),
+      Uri.parse('$baseUrl/ambulances'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'name': name,
+        'fullName': name,
         'email': email,
         'password': password,
-        'phone': phone,
+        'phoneNumber': phone,
         'ambulanceNumber': ambulanceNumber,
-        'licenseNumber': licenseNumber,
+        'licenceNumber': licenseNumber,
         'hospitalId': hospitalId,
         'hospitalName': hospitalName,
         'hospitalAddress': hospitalAddress,
