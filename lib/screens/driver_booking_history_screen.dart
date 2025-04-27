@@ -26,16 +26,16 @@ class _DriverBookingHistoryPageState extends State<DriverBookingHistoryPage> {
     });
   }
 
-  void _showContactOptions(String phoneNumber) {
+  void _showContactOptions(String userName, String phoneNumber) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
-      backgroundColor: Colors.white, // Clean white background
+      backgroundColor: Colors.white,
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -48,19 +48,24 @@ class _DriverBookingHistoryPageState extends State<DriverBookingHistoryPage> {
                 child: const Icon(
                   Icons.phone_in_talk,
                   color: Colors.blueAccent,
-                  size: 50,
+                  size: 40,
                 ),
               ),
-              const SizedBox(height: 16),
-              const Text(
-                'Contact User',
-                style: TextStyle(
-                  fontSize: 22,
+              const SizedBox(height: 10),
+              Text(
+                userName,
+                style: const TextStyle(
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
+                  color: Colors.black87,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 2),
+              Text(
+                phoneNumber,
+                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+              ),
+              const SizedBox(height: 6),
 
               // CALL NOW BUTTON
               ElevatedButton.icon(
@@ -93,7 +98,7 @@ class _DriverBookingHistoryPageState extends State<DriverBookingHistoryPage> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade600,
+                  backgroundColor: Colors.green.shade500,
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 50),
                   elevation: 6,
@@ -136,7 +141,7 @@ class _DriverBookingHistoryPageState extends State<DriverBookingHistoryPage> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepOrangeAccent,
+                  backgroundColor: Colors.teal.shade400,
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 50),
                   elevation: 6,
@@ -145,7 +150,6 @@ class _DriverBookingHistoryPageState extends State<DriverBookingHistoryPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
             ],
           ),
@@ -194,8 +198,12 @@ class _DriverBookingHistoryPageState extends State<DriverBookingHistoryPage> {
                 final booking = bookings[index];
                 return GestureDetector(
                   onTap: () {
-                    _showContactOptions(booking['userPhoneNum'] ?? '');
+                    _showContactOptions(
+                      booking['userName'] ?? 'Unknown User',
+                      booking['userPhoneNum'] ?? '',
+                    );
                   },
+
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),

@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final List<String> availabilityOptions = ['Available', 'Busy'];
   final List<String> ambulanceTypeOptions = ["ICU", "Normal"];
   final ImagePicker _picker = ImagePicker();
-  String selectedAmbulanceType = 'Normal'; // Default value
+  String selectedAmbulanceType = 'Normal';
 
   @override
   void initState() {
@@ -183,21 +183,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               backgroundImage:
                                   _profileImage != null
                                       ? FileImage(_profileImage!)
-                                      : (profileData!['profileImageUrl'] !=
-                                              null &&
-                                          profileData!['profileImageUrl']
-                                              .isNotEmpty)
-                                      ? NetworkImage(
-                                            profileData!['profileImageUrl'],
-                                          )
-                                          as ImageProvider
                                       : null,
+                              key: _profileImage != null ? UniqueKey() : null,
                               child:
-                                  (_profileImage == null &&
-                                          (profileData!['profileImageUrl'] ==
-                                                  null ||
-                                              profileData!['profileImageUrl']
-                                                  .isEmpty))
+                                  (_profileImage == null)
                                       ? const Icon(
                                         Icons.person,
                                         size: 50,
@@ -333,40 +322,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             size: 28,
                           ),
                           const SizedBox(width: 12),
-                          const Text(
-                            "Ambulance Type:",
+                          Text(
+                            "Ambulance Type:     ${profileData!['ambulanceType']}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Expanded(
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: profileData!['ambulanceType'],
-                                // This will store the selected value
-                                isExpanded: true,
-                                items:
-                                    ambulanceTypeOptions
-                                        .map(
-                                          (type) => DropdownMenuItem<String>(
-                                            value: type,
-                                            child: Text(type),
-                                          ),
-                                        )
-                                        .toList(),
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    setState(() {
-                                      selectedAmbulanceType =
-                                          value; // Update selected value
-                                    });
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),

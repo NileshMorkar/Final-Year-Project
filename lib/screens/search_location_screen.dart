@@ -217,7 +217,7 @@ class _LocationScreenState extends State<SearchLocationScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.teal,
+          color: Colors.teal.shade400,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(

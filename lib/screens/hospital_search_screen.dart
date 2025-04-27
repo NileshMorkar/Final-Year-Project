@@ -34,7 +34,6 @@ class _HospitalSearchScreenState extends State<HospitalSearchScreen> {
       longitude: lng,
     );
 
-    // Step 1: Parallel geocoding for hospitals missing coordinates
     final geocodeFutures =
         hospitals.map((hospital) async {
           if (hospital.lat == null || hospital.lng == null) {
@@ -176,7 +175,7 @@ class _HospitalSearchScreenState extends State<HospitalSearchScreen> {
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Colors.teal.shade400,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -184,7 +183,14 @@ class _HospitalSearchScreenState extends State<HospitalSearchScreen> {
                     ),
                     onPressed: useCurrentLocation,
                     icon: const Icon(Icons.my_location),
-                    label: const Text("Use Current Location"),
+                    label: const Text(
+                      "Use Current Location",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
               ],
