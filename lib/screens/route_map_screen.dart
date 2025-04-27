@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:medi_1/api_services/api_services.dart';
 import 'package:medi_1/helper/Helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RouteMapScreen extends StatefulWidget {
   final LatLng origin;
@@ -46,11 +47,32 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
     _initializeMarkers();
     _fetchRoute();
     _startLiveLocationUpdates();
+    _startSendingLocationUpdates();
+  }
+
+  void _startSendingLocationUpdates() {
+    _updateTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+      if (_currentLiveLocation != null) {
+        final ambulanceId = await _getAmbulanceId();
+        if (ambulanceId != null) {
+          await ApiServices.updateAmbulanceLocation(
+            ambulanceId: ambulanceId,
+            latitude: _currentLiveLocation!.latitude,
+            longitude: _currentLiveLocation!.longitude,
+          );
+        } else {
+          print('Ambulance ID not found in local storage');
+        }
+      } else {
+        print('Current location is null');
+      }
+    });
   }
 
   @override
   void dispose() {
     _positionStream?.cancel();
+    _updateTimer?.cancel(); // Important to stop Timer
     super.dispose();
   }
 
@@ -97,6 +119,13 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
         ),
       ),
     );
+  }
+
+  Timer? _updateTimer;
+
+  Future<String?> _getAmbulanceId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('ambulanceId');
   }
 
   void _startLiveLocationUpdates() {

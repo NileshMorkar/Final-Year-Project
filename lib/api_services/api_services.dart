@@ -9,6 +9,39 @@ import '../models/hospital_places.dart';
 import '../models/route_response.dart';
 
 class ApiServices {
+  static Future<void> updateAmbulanceLocation({
+    required String ambulanceId,
+    required double latitude,
+    required double longitude,
+  }) async {
+    print("Location is updated " + ambulanceId);
+    final url = Uri.parse(
+      'https://ambulance-management-backend.onrender.com/ambulances/location/update',
+    );
+
+    final body = jsonEncode({
+      "ambulanceId": ambulanceId,
+      "latitude": latitude.toString(),
+      "longitude": longitude.toString(),
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        print('Location updated successfully');
+      } else {
+        print('Failed to update location: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error updating location: $e');
+    }
+  }
+
   /// Builds Google Maps LatLng JSON
   static Map<String, dynamic> _buildLatLng(LatLng latLng) => {
     "latitude": latLng.latitude,
